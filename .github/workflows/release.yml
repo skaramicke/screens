@@ -1,0 +1,87 @@
+name: Build and Release for Raspberry Pi
+
+on:
+  workflow_dispatch:
+    inputs:
+      version_bump:
+        description: 'Version bump type'
+        required: true
+        default: 'patch'
+        type: choice
+        options:
+          - patch
+          - minor
+          - major
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Bump version
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        npm version ${{ github.event.inputs.version_bump }}
+        echo "NEW_VERSION=$(node -p "require('./package.json').version")" >> $GITHUB_ENV
+
+    - name: Build for Raspberry Pi (ARM v7l)
+      run: npm run build:rpi
+      env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: v${{ env.NEW_VERSION }}
+        release_name: Release v${{ env.NEW_VERSION }}
+        body: |
+          🚀 **Screens v${{ env.NEW_VERSION }}**
+          
+          ## What's New
+          - Automated release for Raspberry Pi (32-bit ARM)
+          - Built with Electron and Three.js
+          
+          ## Installation on Raspberry Pi
+          1. Download the `screens-${{ env.NEW_VERSION }}-linux-armv7l.tar.gz` file
+          2. Extract: `tar -xzf screens-${{ env.NEW_VERSION }}-linux-armv7l.tar.gz`
+          3. Run: `./screens`
+          
+          ## System Requirements
+          - Raspberry Pi 3B+ or newer
+          - Raspberry Pi OS (32-bit)
+          - OpenGL ES support
+        draft: false
+        prerelease: false
+
+    - name: Upload Release Asset
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./dist/screens-${{ env.NEW_VERSION }}-linux-armv7l.tar.gz
+        asset_name: screens-${{ env.NEW_VERSION }}-linux-armv7l.tar.gz
+        asset_content_type: application/gzip
+
+    - name: Push version bump
+      run: |
+        git push origin main
+        git push origin v${{ env.NEW_VERSION }}

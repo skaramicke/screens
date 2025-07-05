@@ -1,0 +1,53 @@
+{
+  "name": "screens",
+  "version": "1.0.0",
+  "description": "3D screens application with Three.js and Electron",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-builder",
+    "build:rpi": "electron-builder --linux --armv7l",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/skaramicke/screens.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/skaramicke/screens/issues"
+  },
+  "homepage": "https://github.com/skaramicke/screens#readme",
+  "dependencies": {
+    "three": "^0.178.0"
+  },
+  "devDependencies": {
+    "electron": "^37.2.0",
+    "electron-builder": "^26.0.12"
+  },
+  "build": {
+    "appId": "com.screens.app",
+    "productName": "Screens",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "main.js",
+      "renderer.js",
+      "index.html",
+      "node_modules/**/*"
+    ],
+    "linux": {
+      "target": [
+        {
+          "target": "tar.gz",
+          "arch": ["armv7l"]
+        }
+      ],
+      "category": "Graphics"
+    }
+  }
+}
