@@ -1,6 +1,6 @@
 {
   "name": "screens",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "3D screens application with Three.js and Electron",
   "main": "main.js",
   "scripts": {
