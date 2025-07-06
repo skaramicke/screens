@@ -27,6 +27,7 @@
     "three": "^0.178.0"
   },
   "devDependencies": {
+    "electron-builder": "^26.0.12",
     "electron": "^37.2.0"
   },
   "build": {
