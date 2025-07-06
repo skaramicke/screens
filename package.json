@@ -6,7 +6,8 @@
   "scripts": {
     "start": "electron .",
     "build": "electron-builder",
-    "build:rpi": "electron-builder --linux --armv7l",
+    "build:rpi": "electron-builder --linux --armv7l --publish always",
+    "test-build:rpi": "electron-builder --linux --armv7l --publish never",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -34,7 +35,6 @@
     "directories": {
       "output": "dist"
     },
-    "publish": "always",
     "files": [
       "main.js",
       "renderer.js",
