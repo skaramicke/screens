@@ -36,8 +36,8 @@ jobs:
         git config --local user.name "GitHub Action"
         npm version ${{ github.event.inputs.version_bump }} --no-git-tag-version
 
-    - name: Build for Raspberry Pi (ARM v7l)
-      run: npm run build:rpi
+    - name: Build and release
+      run: npm run build:publish
       env:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 

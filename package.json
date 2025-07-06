@@ -6,8 +6,8 @@
   "scripts": {
     "start": "electron .",
     "build": "electron-builder",
-    "build:rpi": "electron-builder --linux --armv7l --publish always",
-    "test-build:rpi": "electron-builder --linux --armv7l --publish never",
+    "build:publish": "electron-builder --publish always",
+    "build:test": "electron-builder --publish never",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -23,11 +23,11 @@
   },
   "homepage": "https://github.com/skaramicke/screens#readme",
   "dependencies": {
+    "electron-updater": "^5.3.0",
     "three": "^0.178.0"
   },
   "devDependencies": {
-    "electron": "^37.2.0",
-    "electron-builder": "^26.0.12"
+    "electron": "^37.2.0"
   },
   "build": {
     "appId": "com.screens.app",
@@ -45,10 +45,19 @@
       "target": [
         {
           "target": "tar.gz",
-          "arch": ["armv7l"]
+          "arch": [
+            "armv7l"
+          ]
         }
       ],
-      "category": "Graphics"
+      "category": "Accessories",
+      "publish": [
+        {
+          "provider": "github",
+          "owner": "skaramicke",
+          "repo": "screens"
+        }
+      ]
     }
   }
 }

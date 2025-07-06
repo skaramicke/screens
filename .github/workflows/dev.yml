@@ -24,7 +24,7 @@ jobs:
       run: npm ci
 
     - name: Test build for Raspberry Pi
-      run: npm run build:rpi
+      run: npm run build:test
       env:
         NODE_ENV: development
 
