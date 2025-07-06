@@ -1,5 +1,5 @@
 const { app, BrowserWindow } = require('electron');
-import { autoUpdater } from "electron-updater";
+const { autoUpdater } = require("electron-updater");
 const path = require("path");
 
 function createWindow() {
